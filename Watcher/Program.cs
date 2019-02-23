@@ -18,7 +18,12 @@ namespace Watcher
         {
             new HostBuilder()
                     .UseContentRoot(ProjectPath)
-                    .ConfigureLogging(logging => logging.AddConsole().SetMinimumLevel(LogLevel.Debug))
+                    .ConfigureLogging(logging =>
+                    {
+                        logging.AddConsole()
+                               .AddFilter("Watcher", LogLevel.Debug)
+                               .SetMinimumLevel(LogLevel.Warning);
+                    })
                     .ConfigureServices(services =>
                     {
                         services.AddHostedService<WatcherService>();
