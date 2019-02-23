@@ -12,7 +12,6 @@ namespace Watcher
         static readonly string ProjectName = "SampleApplication";
         static readonly string ProjectPath = Path.GetFullPath(@"..\SampleApplication\");
         static readonly string DllPath = Path.Combine(ProjectPath, @"bin\Debug\netcoreapp3.0\SampleApplication.dll");
-        static readonly string DotNetPath = @"C:\Program Files\dotnet\dotnet.exe";
 
         public static void Main(string[] args)
         {
@@ -34,7 +33,7 @@ namespace Watcher
                             o.ProjectName = ProjectName;
                             o.ProjectPath = ProjectPath;
                             o.DllPath = DllPath;
-                            o.DotNetPath = DotNetPath;
+                            o.DotNetPath = DotNetMuxer.MuxerPathOrDefault();
                             o.Args = args;
                         });
                     })
