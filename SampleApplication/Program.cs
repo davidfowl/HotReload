@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +31,8 @@ namespace SampleApplication
                        webBuilder.UseSetting(WebHostDefaults.PreventHostingStartupKey, "true");
 
                        webBuilder.UseStartup<Startup>();
-                   });
+                   })
+                   .UseServiceProviderFactory(new AutofacServiceProviderFactory());
         }
     }
 }
