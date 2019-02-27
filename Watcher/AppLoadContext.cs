@@ -31,6 +31,19 @@ namespace Watcher
                     // This sucks but it's the only "easy" way besides storing a list of things in the default context
                 }
 
+
+                // Nothing in the default context, use this assembly
+                if (defaultAssembly != null)
+                {
+                    var appAssemblyName = AssemblyName.GetAssemblyName(path);
+
+                    // If the local assembly overrides the one in the default load context (version is higher), then it wins
+                    if (appAssemblyName.Version <= defaultAssembly.GetName().Version)
+                    {
+                        return defaultAssembly;
+                    }
+                }
+
                 // We're loading from Stream because I can't figure out how to make loading from file work and reliably
                 // unlock the file after unload, the alternative is to shadow copy somewhere (like temp)
                 var assemblyStream = new MemoryStream(File.ReadAllBytes(path));
@@ -43,22 +56,7 @@ namespace Watcher
                     assemblySymbols = new MemoryStream(File.ReadAllBytes(symbolsPath));
                 }
 
-                var contextAssembly = LoadFromStream(assemblyStream, assemblySymbols);
-
-                // Nothing in the default context, use this assembly
-                if (defaultAssembly == null)
-                {
-                    return contextAssembly;
-                }
-
-                // If the local assembly overrides the one in the default load context (version is higher), then it wins
-                if (contextAssembly.GetName().Version > defaultAssembly.GetName().Version)
-                {
-                    return contextAssembly;
-                }
-
-                // Otherwise return the default
-                return defaultAssembly;
+                return LoadFromStream(assemblyStream, assemblySymbols);
             }
 
             return null;
