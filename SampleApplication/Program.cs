@@ -26,10 +26,6 @@ namespace SampleApplication
             return Host.CreateDefaultBuilder(args)
                    .ConfigureWebHostDefaults(webBuilder =>
                    {
-                       // Work around https://github.com/dotnet/coreclr/issues/22812
-                       // Disable hosting startup for now
-                       webBuilder.UseSetting(WebHostDefaults.PreventHostingStartupKey, "true");
-
                        webBuilder.UseStartup<Startup>();
                    })
                    .UseServiceProviderFactory(new AutofacServiceProviderFactory());
