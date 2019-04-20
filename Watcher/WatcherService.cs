@@ -98,7 +98,7 @@ namespace Watcher
                     _logger.LogDebug("Application context unloaded");
 
                     // For some odd reason this ends the process
-                    // GC.Collect();
+                    GC.Collect();
 
                     // Don't rebuild if we're shuttind down gracefully
                     if (cancellationToken.IsCancellationRequested)
