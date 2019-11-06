@@ -138,15 +138,24 @@ namespace Watcher
                 fileChangedTcs.TrySetResult(null);
             }
 
+            void OnFileRenamed(object sender, RenamedEventArgs e)
+            {
+                fileChangedTcs.TrySetResult(null);
+            }
+
             var registration = cancellationToken.Register(state => ((TaskCompletionSource<object>)state).TrySetResult(null), fileChangedTcs);
 
             using (registration)
             {
                 watcher.Changed += OnFileChanged;
 
+                watcher.Renamed += OnFileRenamed;
+
                 await fileChangedTcs.Task;
 
                 watcher.Changed -= OnFileChanged;
+
+                watcher.Renamed -= OnFileRenamed;
             }
         }
 
